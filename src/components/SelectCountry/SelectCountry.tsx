@@ -5,7 +5,8 @@ import {ApiCountry} from "../../types";
 const COUNTRIES_URL = 'https://restcountries.com/v2/all?fields=alpha3Code,name';
 
 interface Props {
-  onSelect: () => void
+  name: string;
+  onSelect: (name: string) => void
 }
 
 const SelectCountry: React.FC<Props> = ({onSelect}) => {
@@ -36,7 +37,7 @@ const SelectCountry: React.FC<Props> = ({onSelect}) => {
         name="name"
         value={currentCountry.name}
         onChange={onChange}
-        onSelect={onSelect}
+        onSelect={() => onSelect(currentCountry.name)}
       >
         <option disabled value=''>Select a country</option>
         {countries.map(country => (
