@@ -4,6 +4,8 @@ import CountryInfo from "../../components/CountryInfo/CountryInfo";
 import './App.css';
 
 function App() {
+
+
   return (
     <div className="App">
       <SelectCountry/>
