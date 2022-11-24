@@ -6,41 +6,55 @@ import {ApiCountry, CountryData} from "../../types";
 import './App.css';
 
 const BASE_URL = 'https://restcountries.com/v2/';
-const COUNTRY_URL = 'name/';
+const COUNTRY_URL = 'alpha/';
 
 function App() {
-  const [country, setCountry] = useState<CountryData>({
+  const [fetchCountry, setFetchCountry] = useState<CountryData>({
     name: '',
     alpha3Code: '',
     capital: '',
     population: 0,
-    flags: {},
+    flag: '',
     borders: []
-  })
+  });
 
-  const [chosenCountry, setChosenCountry] = useState("");
+  const [borderCountry, setBorderCountry] = useState<ApiCountry[]>([])
 
-  const fetchData = async (name: string) =>{
-    console.log("Setting country to "+name)
-    setChosenCountry(name)
+  const fetchData = useCallback( async (name: string) =>{
     const countryResponse = await axios.get<CountryData>(BASE_URL + COUNTRY_URL + name);
-    console.log(countryResponse.data)
-  }
+
+    setFetchCountry(countryResponse.data);
+
+    if(countryResponse.data.borders){
+      const promises = countryResponse.data.borders.map(async item =>{
+        const itemResponse = await axios.get<ApiCountry>(BASE_URL + COUNTRY_URL + item);
+
+        return {
+          name: itemResponse.data.name,
+          alpha3Code: itemResponse.data.alpha3Code
+        }
+      });
+      const borderingCountries = await Promise.all(promises);
+      setBorderCountry(borderingCountries)
+    }
+
+  }, [])
 
 
   useEffect(() => {
 
-  }, []);
+  }, [fetchData]);
 
 
 
   return (
     <div className="App">
       <SelectCountry
-        name={chosenCountry}
-        onSelect={(s: string) => fetchData(s)}/>
+        name={'chosenCountry'}
+        onSelect={(select: string) => fetchData(select)}/>
       <CountryInfo
-        country={country}
+        country={fetchCountry}
+        borders={borderCountry}
       />
     </div>
   );

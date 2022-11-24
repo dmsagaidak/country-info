@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import axios from "axios";
 import {ApiCountry} from "../../types";
 
+
 const COUNTRIES_URL = 'https://restcountries.com/v2/all?fields=alpha3Code,name';
 
 interface Props {
@@ -31,7 +32,7 @@ const SelectCountry: React.FC<Props> = ({name, onSelect}) => {
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {name, value} = e.target;
-    onSelect(e.target.value);
+    onSelect(countries.filter(item => item.name === e.target.value)[0].alpha3Code);
     setCurrentCountry(prev =>({...prev, [name]: value}));
   }
 
@@ -42,8 +43,8 @@ const SelectCountry: React.FC<Props> = ({name, onSelect}) => {
   return (
     <div>
       <select
-        name={name}
-        value={name}
+        name="name"
+        value={currentCountry.name}
         onChange={onChange}
       >
         <option disabled value=''>Select a country</option>

@@ -1,0 +1,11 @@
+.country-cont{
+    padding-left: 20px;
+    text-align: left;
+    width: 50vw;
+}
+
+.flag-img{
+    width: 150px;
+    float: right;
+    margin: 0 auto;
+}

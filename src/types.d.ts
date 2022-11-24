@@ -8,6 +8,6 @@ export interface CountryData {
   alpha3Code: string;
   capital: string;
   population: number;
-  flags: {};
-  borders: string[];
+  flag: string;
+  borders: [];
 }
