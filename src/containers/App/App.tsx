@@ -18,26 +18,29 @@ function App() {
     borders: []
   })
 
-  const fetchData = useCallback(async () =>{
-    const countryResponse = await axios.get<CountryData>(BASE_URL + COUNTRY_URL + country.name);
-    console.log(countryResponse)
-    setCountry(countryResponse.data);
-  }, [])
+  const [chosenCountry, setChosenCountry] = useState("");
 
-  fetchData().catch(console.error);
+  const fetchData = async (name: string) =>{
+    console.log("Setting country to "+name)
+    setChosenCountry(name)
+    const countryResponse = await axios.get<CountryData>(BASE_URL + COUNTRY_URL + name);
+    console.log(countryResponse.data)
+  }
+
 
   useEffect(() => {
 
   }, []);
 
 
+
   return (
     <div className="App">
       <SelectCountry
-        name={country.name}
-        onSelect={() => fetchData()}/>
+        name={chosenCountry}
+        onSelect={(s: string) => fetchData(s)}/>
       <CountryInfo
-      country={country}
+        country={country}
       />
     </div>
   );
