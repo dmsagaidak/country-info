@@ -3,14 +3,14 @@ import axios from "axios";
 import {ApiCountry} from "../../types";
 
 
-const COUNTRIES_URL = 'https://restcountries.com/v2/all?fields=alpha3Code,name';
+const ALL_COUNTRIES = 'https://restcountries.com/v2/all?fields=alpha3Code,name';
 
 interface Props {
-  name: string;
+  name: string,
   onSelect: (name: string) => void
 }
 
-const SelectCountry: React.FC<Props> = ({name, onSelect}) => {
+const SelectCountry: React.FC<Props> = ({onSelect}) => {
   const [countries, setCountries] = useState<ApiCountry[]>([]);
   const [currentCountry, setCurrentCountry] = useState<ApiCountry>({
     name: '',
@@ -25,8 +25,9 @@ const SelectCountry: React.FC<Props> = ({name, onSelect}) => {
     ))
 
   const fetchCountry = useCallback(async () => {
-    const countryResponse = await axios.get<ApiCountry[]>(COUNTRIES_URL);
-    setCountries(countryResponse.data)
+    const countriesResponse = await axios.get<ApiCountry[]>(ALL_COUNTRIES);
+    setCountries(countriesResponse.data)
+
 
   }, []);
 
